@@ -1,0 +1,5 @@
+<launch>
+    <node name="reception_db" type="node.py" pkg="dynamodb_ros" output="screen">
+        <param name="config_file" value="$(find dynamodb_ros)/config/config.yaml" />
+    </node>
+</launch>
