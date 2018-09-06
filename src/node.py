@@ -48,7 +48,7 @@ class DynamoDBNode:
 
         self.pub_reply = rospy.Publisher('reply', Reply, queue_size=10)
 
-        rospy.Subscriber('db_query_events', DBQuery, self.handle_api_call)
+        rospy.Subscriber('query', DBQuery, self.handle_api_call)
         rospy.loginfo('%s initialized' %rospy.get_name())
         rospy.spin()
 
@@ -58,7 +58,7 @@ class DynamoDBNode:
         entities = json.loads(msg.entities)
 
         if api_call == 1:
-            resp = self.get_data(entities['<location>'])
+            resp = self.get_data(entities['<locations>'])
 
             output_string = random.choice(LOCATION_TEXT)
             response = output_string.format(location=resp['Name'], desc=resp['Desc'])
@@ -71,9 +71,14 @@ class DynamoDBNode:
                 else:
                     response = "Ok, here you go."
             elif api_call == 3:
-                if resp['Time'] == entities['<time>']:
+                # print(resp['Time'])
+                # print(entities['<time>'])
+                # if resp['Time'].lower() == entities['<time>']:
+                try:
                     output_string = random.choice(FORGOT_DR_NAME)
                     response = output_string.format(name=resp['Name'], dr_name=resp['DrName'])
+                except:
+                    response = 'Something wrong.'
             else:
                 dr_info = self.get_data(resp['DrName'])
                 print(dr_info)
