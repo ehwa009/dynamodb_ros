@@ -15,7 +15,7 @@ LOCATION_TEXT = [
     "The {location} is {desc}.",
 ]
 PRESCRIPTION_TEXT = [
-    '''I'm sorry {name}, your doctor has not yet written your prescription and so it is not ready for collection at the moment.
+    '''I'm sorry {name}, your doctor has not yet written your prescription, and so it is not ready for collection at the moment.
     However, I have sent a message to your doctor. Once the prescription has been written, someone will call you and let you know.
     '''
 ]
@@ -23,7 +23,7 @@ FORGOT_DR_NAME = [
     "No problem {name}, I can see that you have an appointment with {dr_name} today and have checked you in"
 ]
 WAITING_TIME = [
-    "you are next to see {dr_name}, he will be around {waiting_time} more minutes. is there anything else I can help you with?"
+    "you are next to see {dr_name}, he will be around {waiting_time} more minutes."
 ]
 
 
@@ -57,20 +57,20 @@ class DynamoDBNode:
         api_call = msg.api_number
         entities = json.loads(msg.entities)
 
-        if api_call == 1:
+        if api_call == 2:
             resp = self.get_data(entities['<locations>'])
 
             output_string = random.choice(LOCATION_TEXT)
             response = output_string.format(location=resp['Name'], desc=resp['Desc'])
         else:
             resp = self.get_data_with_attr(entities['<patient_name>'], entities['<address>'])
-            if api_call == 2:
+            if api_call == 3:
                 if resp['Prescription'] is False:
                     output_string = random.choice(PRESCRIPTION_TEXT)
                     response = output_string.format(name=resp['Name'])
                 else:
                     response = "Ok, here you go."
-            elif api_call == 3:
+            elif api_call == 4:
                 # print(resp['Time'])
                 # print(entities['<time>'])
                 # if resp['Time'].lower() == entities['<time>']:
@@ -81,7 +81,6 @@ class DynamoDBNode:
                     response = 'Something wrong.'
             else:
                 dr_info = self.get_data(resp['DrName'])
-                print(dr_info)
                 output_string = random.choice(WAITING_TIME)
                 response = output_string.format(dr_name=dr_info['Name'], waiting_time=dr_info['WaitingTime'])
                 
