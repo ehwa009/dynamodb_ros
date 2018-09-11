@@ -57,20 +57,20 @@ class DynamoDBNode:
         api_call = msg.api_number
         entities = json.loads(msg.entities)
 
-        if api_call == 2:
-            resp = self.get_data(entities['<locations>'])
+        if api_call == 1:
+            resp = self.get_data(entities['<location>'])
 
             output_string = random.choice(LOCATION_TEXT)
             response = output_string.format(location=resp['Name'], desc=resp['Desc'])
         else:
             resp = self.get_data_with_attr(entities['<patient_name>'], entities['<address>'])
-            if api_call == 3:
+            if api_call == 2:
                 if resp['Prescription'] is False:
                     output_string = random.choice(PRESCRIPTION_TEXT)
                     response = output_string.format(name=resp['Name'])
                 else:
                     response = "Ok, here you go."
-            elif api_call == 4:
+            elif api_call == 3:
                 # print(resp['Time'])
                 # print(entities['<time>'])
                 # if resp['Time'].lower() == entities['<time>']:
@@ -79,7 +79,7 @@ class DynamoDBNode:
                     response = output_string.format(name=resp['Name'], dr_name=resp['DrName'])
                 except:
                     response = 'Something wrong.'
-            else:
+            elif api_call == 4:
                 dr_info = self.get_data(resp['DrName'])
                 output_string = random.choice(WAITING_TIME)
                 response = output_string.format(dr_name=dr_info['Name'], waiting_time=dr_info['WaitingTime'])
