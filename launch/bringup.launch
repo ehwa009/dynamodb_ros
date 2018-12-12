@@ -1,5 +1,10 @@
 <launch>
-    <node name="reception_db" type="node.py" pkg="dynamodb_ros" output="screen">
+    <arg name="lang" default="eng" />
+
+    <node name="reception_db" type="node_eng.py" pkg="dynamodb_ros" output="screen" if="$(eval lang == 'eng')">
+        <param name="config_file" value="$(find dynamodb_ros)/config/config.yaml" />
+    </node>
+    <node name="reception_db" type="node_kor.py" pkg="dynamodb_ros" output="screen" if="$(eval lang == 'kor')">
         <param name="config_file" value="$(find dynamodb_ros)/config/config.yaml" />
     </node>
 </launch>
