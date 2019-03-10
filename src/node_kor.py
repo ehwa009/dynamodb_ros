@@ -17,10 +17,10 @@ PRESCRIPTION_TEXT_FAIL = [
     u"죄송해요 {name}님, 아직 의사선생님께서 처방전을 작성하지 않아서 아직 준비가 안됬어요. 제가 의사선생님께 이를 알려드렸어요. 처방전이 준비 되었을때, 알려드리도록 할게요."
 ]
 PRESCRIPTION_TEXT_SUCCESS = [
-    u"잠시만 기다리세요. 여기 있습니다.", "여기 있습니다."
+    u"잠시만 기다리세요. 여기 있어요.", "여기 있어요."
 ]
 FORGOT_DR_NAME = [
-    u"걱정 마세요 {name}님, 오늘 {dr_name}의사 선생님과 예약이 잡혀있어요. 접수 해 드렸습니다."
+    u"걱정 마세요 {name}님, 오늘 {dr_name}의사 선생님과 예약이 잡혀있어요. 접수 해 드렸어요."
 ]
 WAITING_TIME = [
     u"네, {dr_name}의사 선생님은 {waiting_time} 분 뒤에 진료 가능하십니다."
@@ -60,7 +60,7 @@ class DynamoDBNode:
             address = res[3]
             resp = self.get_data_with_attr(name, address)
             output_string = random.choice(FORGOT_DR_NAME)
-            response = output_string.format(unicode(name=resp['Name']), unicode(dr_name=resp['DrName']))
+            response = output_string.format(name=resp['Name'], dr_name=resp['DrName'])
         elif res[1] == '위치':
             resp = self.get_data(res[2])
             output_string = random.choice(LOCATION_TEXT)
