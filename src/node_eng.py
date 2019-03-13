@@ -82,7 +82,7 @@ class DynamoDBNode:
             resp = self.get_data_with_attr(name, address)
             dr_info = self.get_data(resp['DrName'])
             output_string = random.choice(WAITING_TIME)
-            response = output_string.format(dr_name=dr_info['Name'], waiting_time=dr_info['WaitingTime'])
+            response = output_string.format(dr_name=dr_info['Desc'], waiting_time=dr_info['WaitingTime'])
         else:
             print('something wrong.')
 
